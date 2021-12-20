@@ -10,14 +10,14 @@ app = Flask(__name__)
 array = [5, 4, 3, 2, 1]
 
 @app.route("/")
-def hello():
+def home():
     return "Hello World"
 
 @app.route("/merge_sort")
 def merge_sort():
     alg = MergeSort()
-    alg.mergeSort(array, 0, len(array)-1)
-    array_str = str(array)
+    alg.mergeSort(array.copy(), 0, len(array)-1)
+    array_str = str(alg.sorting_steps)
     return array_str
 
 @app.route("/quick_sort")

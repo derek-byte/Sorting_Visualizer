@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+    <title>Sorting Algorithm Visualizer</title>
+</head>
+<nav>
+    <div>Sorting Algorithm Visualizer</div>
+</nav>
+
+<body>
+
+    <div class="text">
+        <div class="input-group">
+            <div><label for="sorting_algorithm">Sorting Algorithm</label></div>
+            <div>
+                <select name="sorting" id="sorting">
+                    <option value="" selected>[ Select one ]</option>
+                    <option value="bubble">Bubble Sort</option>
+                    <option value="insertion">Insertion Sort</option>
+                    <option value="selection">Selection Sort</option>
+                    <option value="quick">Quick Sort</option>
+                    <option value="merge">Merge Sort</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <div class="array"><input type="number" name="numbers" id="numbers" placeholder="Enter array"> <button onclick="order()">→</button> </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function order () {
+        var str = document.getElementById("numbers").value;
+        var array = Array.from(str)
+        alert(array)
+        console.log(array)
+    }
+</script>
+</html>
