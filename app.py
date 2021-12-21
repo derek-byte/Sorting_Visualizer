@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from sorting_alg.merge_sort import MergeSort
 from sorting_alg.quick_sort import QuickSort
 from sorting_alg.selection_sort import SelectionSort
@@ -11,7 +11,8 @@ array = [5, 4, 3, 2, 1]
 
 @app.route("/")
 def home():
-    return "Hello World"
+    return render_template('index.html', arr=array)
+    #return "Hello World"
 
 @app.route("/merge_sort")
 def merge_sort():

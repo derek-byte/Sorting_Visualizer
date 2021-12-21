@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="styles.css" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static',filename='styles/styles.css') }}" rel="stylesheet" type="text/css" />
     <title>Sorting Algorithm Visualizer</title>
 </head>
 <nav>
@@ -27,17 +27,39 @@
                 </select>
             </div>
             <div class="input-group">
-                <div class="array"><input type="number" name="numbers" id="numbers" placeholder="Enter array"> <button onclick="order()">→</button> </div>
+                <div class="input"><input type="text" name="numbers" id="numbers" placeholder="Enter array"> <button onclick="order()">→</button> </div>
             </div>
         </div>
     </div>
+
+    <div class="steps">
+        <p>{{arr}}</p>
+    </div>
+
 </body>
+
 <script>
     function order () {
         var str = document.getElementById("numbers").value;
+        // let arr = []; 
+        // let i = 0;
+        // while (i < str.length) {
+        //     let num = 0
+        //     let multiple = 1
+        //     if (str[i] == ',') {
+        //         console.log("Please enter numbers.")
+        //         i++
+        //     }
+        //     else {
+        //         num += 1
+        //     }
+        //     i++
+        // }
+
         var array = Array.from(str)
         alert(array)
         console.log(array)
+        // Need to sperate things based on commas 
     }
 </script>
 </html>
