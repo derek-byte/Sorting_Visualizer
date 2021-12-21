@@ -12,7 +12,7 @@ array = [5, 4, 3, 2, 1]
 @app.route("/")
 def home():
     return render_template('index.html', arr=array)
-    #return "Hello World"
+    return "Hello World"
 
 @app.route("/merge_sort")
 def merge_sort():
