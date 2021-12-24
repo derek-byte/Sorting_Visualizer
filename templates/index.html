@@ -17,23 +17,25 @@
         <div class="input-group">
             <div><label for="sorting_algorithm">Sorting Algorithm</label></div>
             <div>
-                <select name="sorting" id="sorting">
-                    <option value="" selected>[ Select one ]</option>
-                    <option value="bubble">Bubble Sort</option>
-                    <option value="insertion">Insertion Sort</option>
-                    <option value="selection">Selection Sort</option>
-                    <option value="quick">Quick Sort</option>
-                    <option value="merge">Merge Sort</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <div class="input"><input type="text" name="numbers" id="numbers" placeholder="Enter array"> <button onclick="order()">→</button> </div>
+                <form action="#" method="post">
+                    <select name="sorting" id="sorting">
+                        <option value="" selected>[ Select one ]</option>
+                        <option value="bubble_sort">Bubble Sort</option>
+                        <option value="insertion_sort">Insertion Sort</option>
+                        <option value="selection_sort">Selection Sort</option>
+                        <option value="quick_sort">Quick Sort</option>
+                        <option value="merge_sort">Merge Sort</option>
+                    </select>
+                    <div class="input"><input type="text" name="numbers" id="numbers" placeholder="Enter array"> <button onclick="order()">→</button> </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <div class="steps">
-        <p>{{arr}}</p>
+    <div class="step">
+        <p>The Sorting Algorithm is: {{sorting}}</p>
+        <p>The inputted array is: {{original}}</p>
+        <p>The steps taken are: {{arr}}</p>
     </div>
 
 </body>
@@ -41,25 +43,7 @@
 <script>
     function order () {
         var str = document.getElementById("numbers").value;
-        // let arr = []; 
-        // let i = 0;
-        // while (i < str.length) {
-        //     let num = 0
-        //     let multiple = 1
-        //     if (str[i] == ',') {
-        //         console.log("Please enter numbers.")
-        //         i++
-        //     }
-        //     else {
-        //         num += 1
-        //     }
-        //     i++
-        // }
-
-        var array = Array.from(str)
-        alert(array)
-        console.log(array)
-        // Need to sperate things based on commas 
+        alert("Inputted array is: ["+str+"]")
     }
 </script>
 </html>

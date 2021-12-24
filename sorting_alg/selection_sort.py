@@ -1,4 +1,5 @@
 class SelectionSort:
+    sorting_steps = []
     def selectionSort(self,array):
         i = 0 
         while i < len(array):
@@ -16,5 +17,5 @@ class SelectionSort:
             array.pop(index+1)
             
             i += 1
-            print(array)
+            self.sorting_steps.append(array.copy())
         return array

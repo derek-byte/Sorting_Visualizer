@@ -1,7 +1,6 @@
 body {
     background-image: url('/static/images/background.png');
     background-size: cover;
-    /* background-repeat: repeat-x; */
     margin: 0;
 }
 
@@ -17,7 +16,6 @@ nav > div {
     color: #8842d5;
     font-size: 3ch;
     user-select: none;
-    /* font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
@@ -53,4 +51,10 @@ button:hover {
     margin-top: 5em;
     border-radius: 5px;
     padding: 2ch;
+}
+
+p {
+    padding: 2ch;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgb(54, 69, 79);
 }
