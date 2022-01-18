@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request 
+from flask_sqlalchemy import SQLAlchemy 
 from sorting_alg.merge_sort import MergeSort
 from sorting_alg.quick_sort import QuickSort
 from sorting_alg.selection_sort import SelectionSort
@@ -7,7 +8,14 @@ from sorting_alg.insertion_sort import InsertionSort
 
 app = Flask(__name__)
 
-array = [5, 4, 3, 2, 1]
+db = SQLAlchemy()
+DB_NAME = "database.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db.init_app(app)
+
+# class User(db.Model):
+#     id = db.Column(db.Integer)
+#     username = db.Column(db.String(20)) 
 
 def convert_array(value):
     array = []
