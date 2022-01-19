@@ -8,16 +8,22 @@ from sorting_alg.insertion_sort import InsertionSort
 
 app = Flask(__name__)
 
-db = SQLAlchemy()
-DB_NAME = "database.db"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-db.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# class User(db.Model):
-#     id = db.Column(db.Integer)
-#     username = db.Column(db.String(20)) 
+db = SQLAlchemy(app)
+
+class Sort(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    # past_array = db.Column(db.String(100))
+    # steps_array = db.Column(db.String(100))
+    complete = db.Column(db.Boolean)
 
 def convert_array(value):
+    if value == "":
+        return []
+
     array = []
     i = 0
     num = ""
@@ -35,6 +41,15 @@ def convert_array(value):
 
 @app.route("/", methods = ["POST", "GET"])
 def home():
+    db.create_all()
+
+    # new_sort = Sort(title="todo 1", complete=False)
+    # db.session.add(new_sort)
+    # db.session.commit()
+
+    sort_list = Sort.query.all()
+    print(sort_list)
+
     if request.method == "POST":
         value = request.form["numbers"]
         select = request.form["sorting"]
@@ -44,7 +59,7 @@ def home():
             alg = MergeSort()
             alg.mergeSort(array.copy(), 0, len(array)-1)
             array_str = str(alg.sorting_steps)
-            return render_template('index.html', sorting= "Merge Sort", original=value, arr=array_str)
+            return render_template('index.html', sorting= "Merge Sort", original=value, arr=array_str, sort_lists=sort_list)
         
         elif select == "bubble_sort":
             alg = BubbleSort()

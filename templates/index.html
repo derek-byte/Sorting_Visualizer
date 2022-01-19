@@ -38,6 +38,10 @@
         <p>The steps taken are: {{arr}}</p>
     </div>
 
+    {% for new_sort in sort_lists %}
+        <p>{{new_sort.id}} | {{new_sort.title}}</p>
+    {% endfor %}
+
 </body>
 
 <script>
