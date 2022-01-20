@@ -38,8 +38,18 @@
         <p>The steps taken are: {{arr}}</p>
     </div>
 
-    {% for new_sort in sort_lists %}
-        <p>{{new_sort.id}} | {{new_sort.title}}</p>
+    {% for new_sort in sort_lists[::-1] %}
+        <p class="past_sort">{{new_sort.id}} | {{new_sort.title}}</p>
+        <p>Array: {{new_sort.past_array}}</p>
+        <p>Steps: {{new_sort.steps_array}}</p>
+        <form action="{{ url_for('update', new_sort_id=new_sort.id) }}" method="post">
+            <input type="text" name="number" id="number" placeholder="Update array"><input type="submit">
+        </form>
+        <!-- <form action="#" method="post">
+            <div class="input"><input type="text" name="number" id="number" placeholder="Update array"></div>
+        </form>
+        <a href="/update/{{new_sort.id}}">Edit</a> -->
+        <a href="/delete/{{new_sort.id}}">Delete</a>
     {% endfor %}
 
 </body>

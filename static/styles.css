@@ -58,3 +58,7 @@ p {
     font-family: 'Courier New', Courier, monospace;
     background-color: rgb(54, 69, 79);
 }
+
+.past_sort {
+    color: white;
+}

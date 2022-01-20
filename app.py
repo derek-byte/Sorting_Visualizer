@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request 
+from select import select
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy 
 from sorting_alg.merge_sort import MergeSort
 from sorting_alg.quick_sort import QuickSort
@@ -16,9 +17,10 @@ db = SQLAlchemy(app)
 class Sort(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
-    # past_array = db.Column(db.String(100))
-    # steps_array = db.Column(db.String(100))
-    complete = db.Column(db.Boolean)
+    past_array = db.Column(db.String(10000))
+    steps_array = db.Column(db.String(10000))
+    # complete = db.Column(db.Boolean)
+
 
 def convert_array(value):
     if value == "":
@@ -39,55 +41,91 @@ def convert_array(value):
     array.append(int(value[last_comma+1:]))
     return array
 
+def sort1(select, array):
+    if select == "merge_sort":
+        sorting_alg = "Merge Sort"
+        alg = MergeSort()
+        alg.mergeSort(array.copy(), 0, len(array)-1)
+        array_str = str(alg.sorting_steps)
+
+    elif select == "bubble_sort":
+        sorting_alg = "Bubble Sort"
+        alg = BubbleSort()
+        alg.bubbleSort(array.copy())
+        array_str = str(alg.sorting_steps)
+
+    elif select == "selection_sort":
+        sorting_alg = "Selection Sort"
+        alg = SelectionSort()
+        alg.selectionSort(array.copy())
+        array_str = str(alg.sorting_steps)
+
+    elif select == "insertion_sort":
+        sorting_alg = "Insertion Sort"
+        alg = InsertionSort()
+        alg.insertionSort(array.copy())
+        array_str = str(alg.sorting_steps)
+
+    elif select == "quick_sort":
+        sorting_alg = "Quick Sort"
+        alg = QuickSort()
+        alg.quickSort(array.copy(), 0, len(array)-1)
+        array_str = str(alg.sorting_steps)
+
+    else:
+        sorting_alg = "None"
+        array_str = "None"
+
+    return sorting_alg, array_str
+
 @app.route("/", methods = ["POST", "GET"])
 def home():
     db.create_all()
 
-    # new_sort = Sort(title="todo 1", complete=False)
-    # db.session.add(new_sort)
-    # db.session.commit()
-
     sort_list = Sort.query.all()
     print(sort_list)
-
     if request.method == "POST":
         value = request.form["numbers"]
         select = request.form["sorting"]
         array = convert_array(value)
+        sorting_alg = ""
 
-        if select == "merge_sort":
-            alg = MergeSort()
-            alg.mergeSort(array.copy(), 0, len(array)-1)
-            array_str = str(alg.sorting_steps)
-            return render_template('index.html', sorting= "Merge Sort", original=value, arr=array_str, sort_lists=sort_list)
-        
-        elif select == "bubble_sort":
-            alg = BubbleSort()
-            alg.bubbleSort(array.copy())
-            array_str = str(alg.sorting_steps)
-            return render_template('index.html', sorting= "Bubble Sort", original=value, arr=array_str)
+        result = sort1(select, array)
 
-        elif select == "selection_sort":
-            alg = SelectionSort()
-            alg.selectionSort(array.copy())
-            array_str = str(alg.sorting_steps)
-            return render_template('index.html', sorting= "Selection Sort", original=value, arr=array_str)
+        sorting_alg = result[0]
+        array_str = result[1]
 
-        elif select == "insertion_sort":
-            alg = InsertionSort()
-            alg.insertionSort(array.copy())
-            array_str = str(alg.sorting_steps)
-            return render_template('index.html', sorting= "Insertion Sort", original=value, arr=array_str)
+        new_sort = Sort(title=sorting_alg, past_array=str(array), steps_array=array_str)
+        db.session.add(new_sort)
+        db.session.commit()
+        print(sort_list)
 
-        elif select == "quick_sort":
-            alg = QuickSort()
-            alg.quickSort(array.copy(), 0, len(array)-1)
-            array_str = str(alg.sorting_steps)
-            return render_template('index.html', sorting= "Quick Sort", original=value, arr=array_str)
-
-        else:
-            return render_template('index.html', sorting= "No Sorting Algorithm", original=value, arr=[])
+        return render_template('index.html', sorting= sorting_alg, original=value, arr=array_str, sort_lists=sort_list)
 
     else:
-        return render_template('index.html')
-        
+        return render_template('index.html', sort_lists=sort_list)
+
+
+@app.route("/update/<int:new_sort_id>", methods = ["POST", "GET"])
+def update(new_sort_id):
+        sort = Sort.query.filter_by(id=new_sort_id).first()
+        # array = sort.
+        print(request.method)
+        print(new_sort_id)
+        if request.method == "POST":
+            value = request.form["number"]
+            array = convert_array(value)
+            result = sort1(select, array)
+            array_str = result[1]
+            sort.past_array = str(array)
+            sort.steps_array = array_str
+        db.session.commit()
+        return redirect(url_for("home"))
+
+
+@app.route("/delete/<int:new_sort_id>")
+def delete(new_sort_id):
+        sort = Sort.query.filter_by(id=new_sort_id).first()
+        db.session.delete(sort)
+        db.session.commit()
+        return redirect(url_for("home"))
