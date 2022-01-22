@@ -93,12 +93,11 @@ def home():
     all_sorting_entries = SortingEntry.query.all()
 
     if request.method == "POST":
-        value = request.form["numbers"]
-        select = request.form["sorting"]
-        array = convert_str_to_array(value)
-        sorting_alg = ""
+        inputted_arr = request.form["numbers"]
+        inputted_sorting_alg = request.form["sorting"]
+        converted_arr = convert_str_to_array(inputted_arr)
 
-        result = select_sorting_alg(select, array)
+        result = select_sorting_alg(inputted_sorting_alg, converted_arr)
 
         sorting_alg = result[0]
         array_str = result[1]
@@ -106,14 +105,14 @@ def home():
 
         new_sort = SortingEntry(
             title=id,
-            past_array=str(array),
+            past_array=str(converted_arr),
             steps_array=array_str)
         db.session.add(new_sort)
         db.session.commit()
         print(all_sorting_entries)
 
         return render_template('index.html', sorting=sorting_alg,
-                               original=value, arr=array_str, sort_lists=all_sorting_entries)
+                               original=inputted_arr, arr=array_str, sort_lists=all_sorting_entries)
 
     else:
         return render_template('index.html', sort_lists=all_sorting_entries)
@@ -121,37 +120,37 @@ def home():
 
 @app.route("/update/<int:new_sort_id>", methods=["POST", "GET"])
 def update(new_sort_id):
-    sort = SortingEntry.query.filter_by(id=new_sort_id).first()
+    search_sorting_entries = SortingEntry.query.filter_by(id=new_sort_id).first()
     if request.method == "POST":
-        value = request.form["number"]
-        array = convert_str_to_array(value)
-        result = select_sorting_alg(sort.title, array)
+        inputted_arr = request.form["number"]
+        converted_arr = convert_str_to_array(inputted_arr)
+        result = select_sorting_alg(search_sorting_entries.title, converted_arr)
         array_str = result[1]
-        sort.past_array = str(array)
-        sort.steps_array = array_str
+        search_sorting_entries.past_array = str(converted_arr)
+        search_sorting_entries.steps_array = array_str
     db.session.commit()
     return redirect(url_for("home"))
 
 
 @app.route("/delete/<int:new_sort_id>")
 def delete(new_sort_id):
-    sort = SortingEntry.query.filter_by(id=new_sort_id).first()
-    db.session.delete(sort)
+    search_sorting_entries = SortingEntry.query.filter_by(id=new_sort_id).first()
+    db.session.delete(search_sorting_entries)
     db.session.commit()
     return redirect(url_for("home"))
 
 
 @app.route("/create_csv")
 def create_csv():
-    sort_list = SortingEntry.query.all()
+    all_sorting_entries = SortingEntry.query.all()
     csv_arr = []
-    for new_sort in sort_list[::-1]:
-        csv_arr.append([new_sort.id, new_sort.title,
-                       new_sort.past_array, new_sort.steps_array])
+    for entry in all_sorting_entries[::-1]:
+        csv_arr.append([entry.id, entry.title,
+                       entry.past_array, entry.steps_array])
 
     with open('sorting_data.csv', 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
-        for item in csv_arr:
-            writer.writerow(item)
+        for line_entry in csv_arr:
+            writer.writerow(line_entry)
 
     return send_file('sorting_data.csv', as_attachment=True)
