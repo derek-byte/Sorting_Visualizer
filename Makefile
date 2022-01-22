@@ -26,3 +26,7 @@ install: ## installs all required dependencies
 run: ## Run flask application
 	export FLASK_ENV=development
 	flask run
+
+.PHONY: format
+format: ## Formats app.py code
+	autopep8 --in-place --aggressive app.py
