@@ -126,7 +126,7 @@ def home():
 
 
 @app.route("/update/<int:new_sort_id>", methods=["POST", "GET"])
-def update_sorting_entry(new_sort_id):
+def update(new_sort_id):
     search_sorting_entries = SortingEntry.query.filter_by(
         id=new_sort_id).first()
     if request.method == "POST":
@@ -144,7 +144,7 @@ def update_sorting_entry(new_sort_id):
 
 
 @app.route("/delete/<int:new_sort_id>")
-def delete_sorting_entry(new_sort_id):
+def delete(new_sort_id):
     search_sorting_entries = SortingEntry.query.filter_by(
         id=new_sort_id).first()
     db.session.delete(search_sorting_entries)
