@@ -161,7 +161,7 @@ def create_csv():
         csv_arr.append([entry.id, entry.title,
                        entry.past_array, entry.steps_array])
 
-    with open('sorting_data.csv', 'w', encoding='UTF8') as f:
+    with open('sorting_data.csv', 'w+', encoding='UTF8') as f:
         writer = csv.writer(f)
         # Creating and writing data in CSV file
         for line_entry in csv_arr:
